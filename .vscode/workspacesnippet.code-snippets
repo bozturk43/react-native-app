@@ -1,0 +1,84 @@
+{
+	// React Functional Component
+	"React Functional Component": {
+	  "prefix": "rfc",
+	  "body": [
+		"import React from 'react';",
+		"",
+		"const ${1:ComponentName}: React.FC<Props> = (${2:props}) => {",
+		"  return (",
+		"    <div>",
+		"      $3",
+		"    </div>",
+		"  );",
+		"};",
+		"",
+		"export default ${1:ComponentName};"
+	  ],
+	  "description": "Create a React Functional Component"
+	},
+  
+	// React Functional Component with Props
+	"React Functional Component with Props": {
+	  "prefix": "rfcp",
+	  "body": [
+		"import React from 'react';",
+		"",
+		"type Props = {",
+		"  ${1:propName}: ${2:propType};",
+		"};",
+		"",
+		"const ${3:ComponentName}: React.FC<Props> = ({ ${1:propName} }) => {",
+		"  return (",
+		"    <div>",
+		"      $4",
+		"    </div>",
+		"  );",
+		"};",
+		"",
+		"export default ${3:ComponentName};"
+	  ],
+	  "description": "Create a React Functional Component with Props"
+	},
+  
+	// Arrow Function
+	"Arrow Function": {
+	  "prefix": "arrow",
+	  "body": [
+		"const ${1:functionName} = (${2:params}) => {",
+		"  $3",
+		"};"
+	  ],
+	  "description": "Create an Arrow Function"
+	},
+  
+	// Interface
+	"Interface": {
+	  "prefix": "interface",
+	  "body": [
+		"interface ${1:InterfaceName} {",
+		"  ${2:propertyName}: ${3:propertyType};",
+		"}"
+	  ],
+	  "description": "Create an Interface"
+	},
+  
+	// Type Alias
+	"Type Alias": {
+	  "prefix": "type",
+	  "body": [
+		"type ${1:AliasName} = ${2:Type};"
+	  ],
+	  "description": "Create a Type Alias"
+	},
+  
+	// Console.log
+	"Console.log": {
+	  "prefix": "log",
+	  "body": [
+		"console.log(${1});$0"
+	  ],
+	  "description": "Log output to console"
+	}
+  }
+  
