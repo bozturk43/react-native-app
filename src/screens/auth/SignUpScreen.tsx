@@ -1,11 +1,12 @@
 import React from 'react';
 import { Button, Text, View } from 'react-native';
 import { useAuth } from '../../context/AuthContext';
+import SignUpForm from '../../components/SignUp/SignUpForm';
 
 const SignUpScreen = ({navigation}:{navigation:any}) => {
   return (
     <View>
-      <Text>Sign Up Screen</Text>
+      <SignUpForm navigation={navigation}/>
       <Button title="Geri Dön" onPress={()=>navigation.goBack()} />
     </View>
   );
