@@ -1,36 +1,50 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useAuth } from './context/AuthContext';
 import LoginScreen from './screens/auth/LoginScreen';
 import DashboardScreen from './screens/DashboardScreen';
 import SignUpScreen from './screens/auth/SignUpScreen';
+import SettingScreen from './screens/SettingsScreen';
+
 const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
 
 const MainNavigation = () => {
     const { user } = useAuth();
     return (
         <NavigationContainer>
             {user ?
-                <Stack.Navigator initialRouteName='Dashboard'>
-                    <Stack.Screen
+                <Tab.Navigator initialRouteName='Dashboard'>
+                    <Tab.Screen
                         name="Dashboard"
                         component={DashboardScreen}
                         options={{
-                            title: 'My home',
-                            headerStyle: {
-                                backgroundColor: '#f4511e',
-                            },
-                            headerTintColor: '#fff',
-                            headerTitleStyle: {
-                                fontWeight: 'bold',
-                            },
+                            headerShown: false,
+                            tabBarLabel: 'Home',
+                            tabBarIcon: ({ color, size }) => (
+                                <MaterialCommunityIcons name="home" color={color} size={size} />
+                            ),
+
                         }} />
-                </Stack.Navigator>
+                    <Tab.Screen
+                        name="Settings"
+                        component={SettingScreen}
+                        options={{
+                            headerShown: false,
+                            tabBarLabel: 'Profile',
+                            tabBarIcon: ({ color, size }) => (
+                                <MaterialCommunityIcons name="account" color={color} size={size} />
+                            ),
+                        }}
+                    />
+                </Tab.Navigator>
                 :
                 <Stack.Navigator initialRouteName='Login'>
-                    <Stack.Screen name="Login" component={LoginScreen} options={{headerShown:false}} />
-                    <Stack.Screen name="SignUp" component={SignUpScreen} options={{headerShown:false}} />
+                    <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
+                    <Stack.Screen name="SignUp" component={SignUpScreen} options={{ headerShown: false }} />
                 </Stack.Navigator>
             }
         </NavigationContainer>

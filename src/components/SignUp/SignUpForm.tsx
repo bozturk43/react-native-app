@@ -3,19 +3,20 @@ import { Box, Center, FormControl, HStack, Input, Pressable, VStack, WarningOutl
 import { Controller, useForm } from 'react-hook-form';
 import { SignUpFormData } from '../../types/UserTypes';
 
-const SignUpForm = ({ navigation }: { navigation: any }) => {
+const SignUpForm = ({ navigation,handleActiveComponent }: { navigation: any ,handleActiveComponent : () => void }) => {
 
     const { control, handleSubmit, formState: { errors } } = useForm<SignUpFormData>();
+
     const onSubmit = (data: SignUpFormData) => {
         console.log("Veriler", data);
+        handleActiveComponent();
     }
     var imag = require("../../assests/images/signinPageImage.jpg");
     return (
         <HStack bg="#fff" h="full" w="full" alignItems={"center"} _text={{ color: "white" }}>
-                        <Image w="100%" h="100px" source={imag} alt='Define an alt' style={{position:"absolute",top:0}}/>
-
+            <Image w="100%" h="100px" source={imag} alt='Define an alt' style={{ position: "absolute", top: 0 }} />
             <Center w="full">
-            <Heading paddingX={"12px"} marginBottom={"24px"}>
+                <Heading paddingX={"12px"} marginBottom={"24px"}>
                     Don't think about it every day just
                     <Text color={"brand.800"}> Sign Up</Text>
                 </Heading>

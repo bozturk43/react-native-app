@@ -9,7 +9,6 @@ const SettingScreen = () => {
     <View>
       <Text>Settings Screen</Text>
       <Text>{user?.username}</Text>
-
     </View>
   );
 };

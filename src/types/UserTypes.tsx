@@ -4,8 +4,3 @@ export interface SignUpFormData{
     password:string;
     confirmPassword:string;
 }
-
-interface LoginDataType {
-    email:string,
-    password:string
-}

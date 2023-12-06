@@ -1,16 +1,21 @@
 import React from 'react';
-import { Button, Text, View } from 'react-native';
 import { useAuth } from '../context/AuthContext';
+import { Box, Center, Container, HStack, Heading, ScrollView, Text, VStack, View } from 'native-base';
+import { CustomCard } from '../components/Shared/CustomCard';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import RowScroll from '../components/Dashboard/RowScroll';
 
 const DashboardScreen = () => {
-  const { user,logout } = useAuth();
+  const { user, logout } = useAuth();
 
   return (
-    <View>
-      <Text>Dashboard Screen</Text>
-      <Text>{user?.token}</Text>
-      <Button title="Çıkış Yap" onPress={()=>logout()} />
-    </View>
+    <ScrollView paddingTop={2} paddingBottom={2}>
+      <VStack space={4}>
+        <RowScroll />
+        <RowScroll />
+        <RowScroll />
+      </VStack>
+    </ScrollView>
   );
 };
 
