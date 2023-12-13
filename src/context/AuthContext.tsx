@@ -12,7 +12,7 @@ type User = {
 // AuthContext tipini oluştur
 type AuthContextType = {
   user: User | null;
-  login: (userData:LoginDataType) => void;
+  login: (userData:any) => void;
   logout: () => void;
   loggedIn:boolean;
 };
@@ -20,7 +20,7 @@ type AuthContextType = {
 // Context oluştur
 const AuthContext = createContext<AuthContextType | undefined>({
   user:null,
-  login: (userData:LoginDataType) => {},  
+  login: (userData:any) => {},  
   logout:() => {},
   loggedIn:false,
 });
@@ -31,7 +31,7 @@ export const AuthProvider = ({ children }:{children:React.ReactNode}) => {
   const [loggedIn,setLoggedIn]= useState<boolean>(false);
 
   // Login metodu
-  const login = async (userData:LoginDataType) => {
+  const login = async (userData:any) => {
     console.log("USER DATA IN CONTEXT",userData);
     const response = await loginFromService(userData);
     if(response.status === 200){

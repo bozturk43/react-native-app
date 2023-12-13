@@ -17,7 +17,11 @@ const MainNavigation = () => {
     return (
         <NavigationContainer>
             {user ?
-                <Tab.Navigator initialRouteName='Dashboard'>
+                <Tab.Navigator initialRouteName='Dashboard' screenOptions={{
+                    tabBarStyle:{backgroundColor:'#d44e00'},
+                    tabBarInactiveTintColor:"#fff",
+                    tabBarActiveTintColor:"#FFA9D6"
+                }}>
                     <Tab.Screen
                         name="Dashboard"
                         component={DashboardScreen}

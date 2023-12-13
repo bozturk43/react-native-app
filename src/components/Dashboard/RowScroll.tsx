@@ -7,11 +7,6 @@ const RowScroll = () => {
     return (
         <>
             <Box>
-                <Heading p={2} alignItems={"center"} justifyContent={"center"}>
-                    <Text fontSize={"md"}>Bölüm 1</Text>
-                    <MaterialCommunityIcons name="arrow-right-bold-box" color={"black"} size={20} />
-                </Heading>
-                <View style={{ borderBottomWidth: 1, borderBottomColor: 'black' }} marginBottom={2} />
                 <ScrollView horizontal={true}>
                     <HStack space={3}>
                         <CustomCard />
@@ -20,7 +15,6 @@ const RowScroll = () => {
                     </HStack>
                 </ScrollView>
             </Box>
-            <View style={{ borderBottomWidth: 1, borderBottomColor: 'black' }} />
         </>
     );
 };
