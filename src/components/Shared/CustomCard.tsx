@@ -1,6 +1,10 @@
 import { AspectRatio, Box, Center, HStack, Heading, Image, Stack, Text } from "native-base";
+import { truncateDescription } from "../../helpers/StringHelper";
 
-export const CustomCard = () => {
+export const CustomCard = (
+    {url,categoryName,foodName,foodDescription}:
+    {url:string,categoryName:string,foodName:string,foodDescription:string}
+    ) => {
     return <Box alignItems="center" w="200px" h="200px" >
         <Box maxW="80" rounded="lg" overflow="hidden" _dark={{
             borderColor: "coolGray.600",
@@ -14,7 +18,7 @@ export const CustomCard = () => {
             <Box>
                 <Image
                     source={{
-                        uri: "https://www.holidify.com/images/cmsuploads/compressed/Bangalore_citycover_20190613234056.jpg"
+                        uri: url
                     }}
                     style={{ width: 200, height: 100 }}
                     alt = "alt for img"
@@ -26,17 +30,17 @@ export const CustomCard = () => {
                     fontWeight: "700",
                     fontSize: "2xs"
                 }} position="absolute" bottom="0" px="3" py="1.5">
-                    PHOTOS
+                    {categoryName}
                 </Center>
             </Box>
             <Stack p="2" backgroundColor={"brand.800"}>
                 <Stack>
                     <Heading size="sm" ml="-1">
-                        The Garden City
+                        {foodName}
                     </Heading>
                 </Stack>
                 <Text fontWeight="400" fontSize="xs">
-                    Bengaluru (also called Bangalore) is the center of India's high-tech
+                    {truncateDescription(foodDescription,90)}
                 </Text>
             </Stack>
         </Box>

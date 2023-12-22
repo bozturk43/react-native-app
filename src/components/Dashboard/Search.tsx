@@ -30,10 +30,12 @@ const categories: any[] = [
 ]
 
 
-const Search = () => {
+const Search = ({onFocus,onBlur}:{onFocus:()=>void,onBlur:()=>void}) => {
     return (
         <VStack space={2} backgroundColor={"brand.900"}>
             <Input
+                onFocus={()=>onFocus()}
+                onBlur={()=>onBlur()}
                 background={"#fff"}
                 backgroundColor={"#fff"}
                 placeholder="Search"

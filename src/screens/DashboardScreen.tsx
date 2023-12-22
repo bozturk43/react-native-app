@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { ThemeProvider, useTheme } from '../context/ThemeContext'
 import { AspectRatio, Box, Center, Container, HStack, Heading, Image, Avatar, ScrollView, Stack, Text, VStack, View, Icon, Input, Pressable, Spacer } from 'native-base';
@@ -8,21 +8,37 @@ import SelectedCard from '../components/Shared/SelectedCard';
 import Greetings from '../components/Dashboard/Greetings';
 import Search from '../components/Dashboard/Search';
 import { StyleSheet } from 'react-native';
+import { belirliKategorilerdenBirerYemekAl, yemekler } from '../data/mocData'
+import { Food } from '../types/ObjectTypes';
 
 const DashboardScreen = () => {
   const { user, logout } = useAuth();
-  const { colors,fonts } = useTheme();
+  const { colors, fonts } = useTheme();
+  const [isSearch,setIsSearch] = useState<boolean>(false);
+  const rastgeleAnaYemek = yemekler.find((item) => item.KategoriId === 1)
+  const seciliYemekler: Food[] = belirliKategorilerdenBirerYemekAl();
+  console.log(seciliYemekler);
   return (
     <ScrollView stickyHeaderIndices={[1]} paddingX={2} paddingTop={2} paddingBottom={2} style={{backgroundColor:colors.brand[900]}} >
-      <Greetings username={user?.username || ""} />
-      <Search/>
-      {/*==============SECTİON 1=========== */}
-      <VStack space={4}>
+    {!isSearch && <Greetings username={user?.username || ""} />}
+      <Search onFocus={()=>setIsSearch(true)} onBlur={()=>setIsSearch(false)} />
+      {
+        isSearch ? 
+        <View>
+          <Text>
+            Search Screen
+          </Text>
+        </View> 
+        :
+        <>
+        <VStack space={4}>
         <VStack space={2} paddingY={2}>
           <Heading pl="2" fontSize={18}>
             Günün Yemegi
           </Heading>
-          <SelectedCard />
+          {rastgeleAnaYemek &&
+            <SelectedCard heading={rastgeleAnaYemek?.Ad} url={rastgeleAnaYemek?.Fotograf} />
+          }
         </VStack>
         {/*==============SECTİON 2=========== */}
         <VStack space={2}>
@@ -34,7 +50,7 @@ const DashboardScreen = () => {
               (Mevcut Ürünleriniz ile Yapabilirsiniz.)
             </Text>
           </HStack>
-          <RowScroll />
+          {seciliYemekler && <RowScroll foodList={seciliYemekler} />}
         </VStack>
         {/*==============SECTİON 3=========== */}
         <VStack space={2}>
@@ -46,10 +62,14 @@ const DashboardScreen = () => {
               (Alacağınız ek bir kaç ürün ile Yapabilirsiniz.)
             </Text>
           </HStack>
-          <RowScroll />
+          {seciliYemekler && <RowScroll foodList={seciliYemekler} />}
         </VStack>
         {/*==============END SECTİONS=========== */}
       </VStack>
+      </>
+      }
+      {/*==============SECTİON 1=========== */}
+      
     </ScrollView>
   );
 };

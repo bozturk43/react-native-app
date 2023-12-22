@@ -1,6 +1,6 @@
 import { AspectRatio, Box, Heading, Image, Stack, VStack } from "native-base";
 
-const SelectedCard = () => {
+const SelectedCard = ({heading,url}:{heading:string,url:string}) => {
     return (
         <VStack backgroundColor={"brand.800"} p="2" borderRadius={"md"} shadow={4}>
             <Box alignItems={"center"}>
@@ -14,15 +14,13 @@ const SelectedCard = () => {
                     backgroundColor: "gray.50"
                 }}>
                     <AspectRatio w="100%" ratio={16 / 9}>
-                        <Image source={{
-                            uri: "https://cdn.yemek.com/mncrop/940/625/uploads/2016/09/kutahya-yemekleri-one-cikan.jpg"
-                        }} alt="image" />
+                        <Image source={{ uri:url }} alt="image" />
                     </AspectRatio>
                 </Box>
             </Box>
             <Stack pl="3" pt="2">
                 <Heading size="md">
-                    The Garden City
+                    {heading}
                 </Heading>
             </Stack>
         </VStack>
