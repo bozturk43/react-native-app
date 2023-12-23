@@ -31,6 +31,16 @@ const MainNavigation = () => {
                             tabBarIcon: ({ color, size }) => (
                                 <MaterialCommunityIcons name="home" color={color} size={size} />
                             ),
+                        }} />
+                    <Tab.Screen
+                        name="Dolabım"
+                        component={DashboardScreen}
+                        options={{
+                            headerShown: false,
+                            tabBarLabel: 'Dolabım',
+                            tabBarIcon: ({ color, size }) => (
+                                <MaterialCommunityIcons name="bowl-mix" color={color} size={size} />
+                            )
 
                         }} />
                     <Tab.Screen
