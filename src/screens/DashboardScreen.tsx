@@ -1,34 +1,36 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { ThemeProvider, useTheme } from '../context/ThemeContext'
-import { AspectRatio, Box, Center, Container, HStack, Heading, Image, Avatar, ScrollView, Stack, Text, VStack, View, Icon, Input, Pressable, Spacer } from 'native-base';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useTheme } from '../context/ThemeContext'
+import {HStack, Heading,ScrollView, Text, VStack, View} from 'native-base';
 import RowScroll from '../components/Dashboard/RowScroll';
 import SelectedCard from '../components/Shared/SelectedCard';
 import Greetings from '../components/Dashboard/Greetings';
 import Search from '../components/Dashboard/Search';
-import { StyleSheet } from 'react-native';
 import { belirliKategorilerdenBirerYemekAl, yemekler } from '../data/mocData'
 import { Food } from '../types/ObjectTypes';
+import SearchResult from '../components/Dashboard/SearchResult';
 
 const DashboardScreen = () => {
   const { user, logout } = useAuth();
   const { colors, fonts } = useTheme();
   const [isSearch,setIsSearch] = useState<boolean>(false);
+  const [searchText,setSearchText] = useState<string>("");
   const rastgeleAnaYemek = yemekler.find((item) => item.KategoriId === 1)
   const seciliYemekler: Food[] = belirliKategorilerdenBirerYemekAl();
-  console.log(seciliYemekler);
   return (
-    <ScrollView stickyHeaderIndices={[1]} paddingX={2} paddingTop={2} paddingBottom={2} style={{backgroundColor:colors.brand[900]}} >
+    <ScrollView stickyHeaderIndices={ isSearch ? [0] : [1]} paddingX={2} paddingTop={2} paddingBottom={2} style={{backgroundColor:colors.brand[900]}} >
     {!isSearch && <Greetings username={user?.username || ""} />}
-      <Search onFocus={()=>setIsSearch(true)} onBlur={()=>setIsSearch(false)} />
+      <Search 
+        onFocus={()=>setIsSearch(true)} 
+        isOnSearch={isSearch} 
+        closeSearch={()=>{
+          setIsSearch(false);
+          setSearchText("");
+        }} 
+        onTextChange={(e)=>setSearchText(e)}/>
       {
         isSearch ? 
-        <View>
-          <Text>
-            Search Screen
-          </Text>
-        </View> 
+        <SearchResult searchText={searchText}/>
         :
         <>
         <VStack space={4}>
