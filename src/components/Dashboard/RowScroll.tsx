@@ -6,7 +6,6 @@ import { Food } from '../../types/ObjectTypes';
 import { getCategoryName } from '../../data/mocData';
 
 const RowScroll = ({foodList}:{foodList:Food[]}) => {
-    console.log("InScroll",foodList)
     return (
         <>
             <Box>

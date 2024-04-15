@@ -1,8 +1,9 @@
-import React, { createContext, useContext, useState } from 'react';
-import { loginFromService } from '../services/user-service';
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { loginFromService ,getUser} from '../services/user-service';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Kullanıcı bilgilerini içeren tip
-type User = {
+export type User = {
   username: string;
   email: string;
   token:string;
@@ -32,17 +33,17 @@ export const AuthProvider = ({ children }:{children:React.ReactNode}) => {
 
   // Login metodu
   const login = async (userData:any) => {
-    console.log("USER DATA IN CONTEXT",userData);
     const response = await loginFromService(userData);
     if(response.status === 200){
-      console.log("Response",response.data);
-      setUser({
+      await AsyncStorage.setItem("user",JSON.stringify({
         username:"Burak",
         email:"abc.com",
         token:response.data.token
-      });
+      }));
+      const userObject =await AsyncStorage.getItem("user");
+      const storagedUser: User = userObject && JSON.parse(userObject);
+      setUser(storagedUser)
       setLoggedIn(true);
-      console.log("user",user);
     }
     else{
       throw new Error("Error from Auth");
@@ -53,6 +54,15 @@ export const AuthProvider = ({ children }:{children:React.ReactNode}) => {
   const logout = () => {
     setUser(null);
   };
+
+  useEffect(() => {
+    const fetchUser = async () => {
+        const fetchedUser = await AsyncStorage.getItem("user"); // getUser fonksiyonunu await ile çağırın
+        fetchedUser && setUser(JSON.parse(fetchedUser)); // user state'ini güncelleyin
+    };
+
+    fetchUser(); // useEffect içinde getUser fonksiyonunu çağırın
+}, []);
 
   return (
     <AuthContext.Provider value={{ user, login, logout,loggedIn }}>

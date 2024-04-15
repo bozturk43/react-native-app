@@ -13,7 +13,6 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
   };
 
   function LogInUser() {
-    console.log("METHOD CALISTI");
     login(userData);
   }
   var imag = require("../../assests/images/logo-color.png");
