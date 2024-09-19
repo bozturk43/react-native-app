@@ -1,30 +1,45 @@
-import { Box, Center, HStack, Heading, Image, ScrollView, Stack, Text, VStack, View } from "native-base";
-import { belirliKategorilerdenBirerYemekAl, getCategoryName } from "../../data/mocData";
+import { Box, Center, HStack, Heading, Image, ScrollView, Stack, Text, VStack, View, useScreenReaderEnabled } from "native-base";
+import { belirliKategorilerdenBirerYemekAl, getCategoryName, searchFoods } from "../../data/mocData";
 import { Food } from "../../types/ObjectTypes";
 import ColScroll from "./ColScroll";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { truncateDescription } from "../../helpers/StringHelper";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 interface Props {
-    searchText: string
+    searchText: string,
+    searchCategoryId:number,
 }
 
 
-const SearchResult = ({ searchText }: Props) => {
-    const seciliYemekler: Food[] = belirliKategorilerdenBirerYemekAl();
+const SearchResult = ({ searchText,searchCategoryId }: Props) => {
+    const [seciliYemekler,setSeciliYemekler] = useState<Food[]>(belirliKategorilerdenBirerYemekAl());
+    const [isSearched,setIsSearched] = useState<boolean>(false);
 
     useEffect(() => {
         if (searchText !== "") {
             searchByText(searchText);
+            setIsSearched(true);
         }
-    }, [searchText])
+        else{
+            setIsSearched(false);
+        }
+    }, [searchText]);
+    useEffect(() => {
+        if (searchCategoryId > -1) {
+            filterByCategoryId(searchCategoryId);
+        }
+    }, [searchCategoryId])
 
     const searchByText = (text: string) => {
-        console.log("Texte Göre Arama", text);
+        const findedFoods = searchFoods(text);
+        setSeciliYemekler(findedFoods);
     }
-    const filterByCategoryId = () => {
-        console.log("Id Göre Arama");
+    const filterByCategoryId = (categoryId : number) => {
+        if(isSearched){
+            const filteredByCategory = seciliYemekler.filter((item)=>item.KategoriId === categoryId);
+            setSeciliYemekler(filteredByCategory);
+        }
     }
     return (
         <View style={{ paddingVertical: 12 }}>
@@ -43,7 +58,7 @@ const ResultContent = ({ foodList }: ResultContentProps) => {
         <Box>
             <ScrollView>
                 <Center>
-                    <VStack space={3}>
+                    <VStack space={3} paddingX={4}>
                         {foodList?.map((item, index) => (
                             <ItemContent
                                 key={index}
@@ -68,8 +83,8 @@ interface ItemContentProps {
 }
 const ItemContent = ({ url, categoryName, foodName, foodDescription }: ItemContentProps) => {
     return (
-        <Box alignItems="center" width="80%">
-            <Box maxW="80" rounded="lg" overflow="hidden" _dark={{
+        <Box alignItems="center" width="75vw">
+            <Box rounded="lg" overflow="hidden" _dark={{
                 borderColor: "coolGray.600",
                 backgroundColor: "gray.700"
             }} _web={{

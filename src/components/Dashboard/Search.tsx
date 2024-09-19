@@ -12,38 +12,45 @@ interface Props{
     isOnSearch:boolean;
     closeSearch:()=>void;
     onTextChange: (text: string) => void;
+    onCategorySelect: (cetgoryId: number) => void;
 }
 
 const categories: any[] = [
     {
         label: "Baslangıclar",
-        icon: <Ionicons name="search-sharp" />
+        icon: <Ionicons name="search-sharp" />,
+        id:-1
     },
     {
         label: "Ara Sıcaklar",
-        icon: <Ionicons name="search-sharp" />
+        icon: <Ionicons name="search-sharp" />,
+        id:-1
     },
     {
         label: "Ana Yemekler",
-        icon: <Ionicons name="search-sharp" />
+        icon: <Ionicons name="search-sharp" />,
+        id:1
     },
     {
         label: "Soguk Mezeler",
-        icon: <Ionicons name="search-sharp" />
+        icon: <Ionicons name="search-sharp" />,
+        id:-1
     },
     {
         label: "Tatlılar",
-        icon: <Ionicons name="search-sharp" />
+        icon: <Ionicons name="search-sharp" />,
+        id:2
     },
     {
         label: "İçecekler",
-        icon: <Ionicons name="search-sharp" />
+        icon: <Ionicons name="search-sharp" />,
+        id:-1
     },
 
 ]
 
 
-const Search = ({onFocus,isOnSearch,closeSearch,onTextChange}:Props) => {
+const Search = ({onFocus,isOnSearch,closeSearch,onTextChange,onCategorySelect}:Props) => {
     const [searchText, setSearchText] = useState('');
 
     const onClose = () =>{
@@ -80,7 +87,14 @@ const Search = ({onFocus,isOnSearch,closeSearch,onTextChange}:Props) => {
                 <HStack space={2}>
                     {categories.map((item, index) => {
                         return (
-                            <Pressable key={index} backgroundColor={"brand.700"} borderRadius={"md"} padding={1} justifyContent={"flex-start"} alignItems={"flex-start"}>
+                            <Pressable 
+                                key={index}
+                                onPress={()=>onCategorySelect(item.id)}
+                                backgroundColor={"brand.700"} 
+                                borderRadius={"md"} 
+                                padding={1} 
+                                justifyContent={"flex-start"} 
+                                alignItems={"flex-start"}>
                                 <HStack>
                                     <Icon size="4" color="gray.400" as={item.icon} />
                                     <Text color={"white"} fontSize={10}>{item.label}</Text>

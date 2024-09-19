@@ -130,7 +130,7 @@ export const yemekler: Food[] = [
         Ad: "Muzlu Cheesecake",
         Tarif: "Bisküvileri ezin, üzerine cheesecake karışımını dökün ve muz dilimleriyle süsleyin.",
         MalzemeIdleri: [17, 18, 19, 20],
-        Fotograf: "https://example.com/muzlu-cheesecake.jpg"
+        Fotograf: "https://images.pexels.com/photos/6364473/pexels-photo-6364473.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&dpr=1"
     },
     {
         Id: 7,
@@ -226,5 +226,12 @@ export function belirliKategorilerdenBirerYemekAl() {
 export function getCategoryName(id:number){
     const kategori = kategoriler.find((item)=>item.KategoriId === id);
     return kategori?.KategoriAd
+}
+
+export function searchFoods(text:string){
+    const filteredFoods : Food[]  = yemekler.filter((item)=>item.Ad.includes(text));
+    return filteredFoods;
+
+
 }
   

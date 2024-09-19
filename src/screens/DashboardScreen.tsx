@@ -15,6 +15,7 @@ const DashboardScreen = () => {
   const { colors, fonts } = useTheme();
   const [isSearch,setIsSearch] = useState<boolean>(false);
   const [searchText,setSearchText] = useState<string>("");
+  const [searchCategory,setSearchCategory]=useState<number>(-1)
   const rastgeleAnaYemek = yemekler.find((item) => item.KategoriId === 1)
   const seciliYemekler: Food[] = belirliKategorilerdenBirerYemekAl();
   return (
@@ -26,11 +27,14 @@ const DashboardScreen = () => {
         closeSearch={()=>{
           setIsSearch(false);
           setSearchText("");
+          setSearchCategory(-1)
         }} 
-        onTextChange={(e)=>setSearchText(e)}/>
+        onTextChange={(e)=>setSearchText(e)}
+        onCategorySelect = {(e)=>setSearchCategory(e)}
+        />
       {
         isSearch ? 
-        <SearchResult searchText={searchText}/>
+        <SearchResult searchText={searchText} searchCategoryId={searchCategory}/>
         :
         <>
         <VStack space={4}>
