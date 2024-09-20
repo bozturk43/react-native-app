@@ -8,6 +8,7 @@ import LoginScreen from './screens/auth/LoginScreen';
 import DashboardScreen from './screens/DashboardScreen';
 import SignUpScreen from './screens/auth/SignUpScreen';
 import SettingScreen from './screens/SettingsScreen';
+import InventoryScreen from './screens/InventoryScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -34,7 +35,7 @@ const MainNavigation = () => {
                         }} />
                     <Tab.Screen
                         name="Dolabım"
-                        component={DashboardScreen}
+                        component={InventoryScreen}
                         options={{
                             headerShown: false,
                             tabBarLabel: 'Dolabım',

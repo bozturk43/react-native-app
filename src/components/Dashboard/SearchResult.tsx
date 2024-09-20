@@ -1,5 +1,5 @@
 import { Box, Center, HStack, Heading, Image, ScrollView, Stack, Text, VStack, View, useScreenReaderEnabled } from "native-base";
-import { belirliKategorilerdenBirerYemekAl, getCategoryName, searchFoods } from "../../data/mocData";
+import { belirliKategorilerdenBirerYemekAl, getCategoryName, searchFoods,searchFoodsByCategoryId,yemekler } from "../../data/mocData";
 import { Food } from "../../types/ObjectTypes";
 import ColScroll from "./ColScroll";
 import { useEffect, useState } from "react";
@@ -28,6 +28,7 @@ const SearchResult = ({ searchText,searchCategoryId }: Props) => {
     useEffect(() => {
         if (searchCategoryId > -1) {
             filterByCategoryId(searchCategoryId);
+            setIsSearched(true);
         }
     }, [searchCategoryId])
 
@@ -37,8 +38,8 @@ const SearchResult = ({ searchText,searchCategoryId }: Props) => {
     }
     const filterByCategoryId = (categoryId : number) => {
         if(isSearched){
-            const filteredByCategory = seciliYemekler.filter((item)=>item.KategoriId === categoryId);
-            setSeciliYemekler(filteredByCategory);
+            const filteredByCategoryFoods = searchFoodsByCategoryId(categoryId);
+            setSeciliYemekler(filteredByCategoryFoods);
         }
     }
     return (

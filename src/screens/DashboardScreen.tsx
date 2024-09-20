@@ -15,8 +15,8 @@ const DashboardScreen = () => {
   const { colors, fonts } = useTheme();
   const [isSearch,setIsSearch] = useState<boolean>(false);
   const [searchText,setSearchText] = useState<string>("");
-  const [searchCategory,setSearchCategory]=useState<number>(-1)
-  const rastgeleAnaYemek = yemekler.find((item) => item.KategoriId === 1)
+  const [searchCategory,setSearchCategory]=useState<number>(-1);
+  const rastgeleAnaYemek = yemekler.find((item) => item.KategoriId === 1);
   const seciliYemekler: Food[] = belirliKategorilerdenBirerYemekAl();
   return (
     <ScrollView stickyHeaderIndices={ isSearch ? [0] : [1]} paddingX={2} paddingTop={2} paddingBottom={2} style={{backgroundColor:colors.brand[900]}} >

@@ -231,7 +231,10 @@ export function getCategoryName(id:number){
 export function searchFoods(text:string){
     const filteredFoods : Food[]  = yemekler.filter((item)=>item.Ad.includes(text));
     return filteredFoods;
+}
 
-
+export function searchFoodsByCategoryId(categoryId:number){
+    const filteredFoodsByCategory : Food[]  = yemekler.filter((item)=>item.KategoriId === categoryId);
+    return filteredFoodsByCategory;
 }
   

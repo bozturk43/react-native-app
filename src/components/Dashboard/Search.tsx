@@ -19,32 +19,32 @@ const categories: any[] = [
     {
         label: "Baslangıclar",
         icon: <Ionicons name="search-sharp" />,
-        id:-1
+        id:1
     },
     {
         label: "Ara Sıcaklar",
         icon: <Ionicons name="search-sharp" />,
-        id:-1
+        id:2
     },
     {
         label: "Ana Yemekler",
         icon: <Ionicons name="search-sharp" />,
-        id:1
+        id:3
     },
     {
         label: "Soguk Mezeler",
         icon: <Ionicons name="search-sharp" />,
-        id:-1
+        id:4
     },
     {
         label: "Tatlılar",
         icon: <Ionicons name="search-sharp" />,
-        id:2
+        id:5
     },
     {
         label: "İçecekler",
         icon: <Ionicons name="search-sharp" />,
-        id:-1
+        id:6
     },
 
 ]
@@ -52,10 +52,13 @@ const categories: any[] = [
 
 const Search = ({onFocus,isOnSearch,closeSearch,onTextChange,onCategorySelect}:Props) => {
     const [searchText, setSearchText] = useState('');
+    const [categoryId, setCategoryId] = useState(-1);
+
 
     const onClose = () =>{
         closeSearch();
         setSearchText("");
+        setCategoryId(-1)
     }
 
     return (
@@ -89,7 +92,10 @@ const Search = ({onFocus,isOnSearch,closeSearch,onTextChange,onCategorySelect}:P
                         return (
                             <Pressable 
                                 key={index}
-                                onPress={()=>onCategorySelect(item.id)}
+                                onPress={()=>{
+                                    onCategorySelect(item.id),
+                                    onFocus();
+                                }}
                                 backgroundColor={"brand.700"} 
                                 borderRadius={"md"} 
                                 padding={1} 
