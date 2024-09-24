@@ -34,10 +34,12 @@ export const AuthProvider = ({ children }:{children:React.ReactNode}) => {
   // Login metodu
   const login = async (userData:any) => {
     const response = await loginFromService(userData);
+    console.log("Response",response.data);
+
     if(response.status === 200){
       await AsyncStorage.setItem("user",JSON.stringify({
-        username:"Burak",
-        email:"abc.com",
+        username:response.data.user.name,
+        email:response.data.user.email,
         token:response.data.token
       }));
       const userObject =await AsyncStorage.getItem("user");
@@ -51,13 +53,17 @@ export const AuthProvider = ({ children }:{children:React.ReactNode}) => {
   };
 
   // Logout metodu
-  const logout = () => {
-    setUser(null);
+  const logout = async () => {
+    // AsyncStorage'dan kullanıcı bilgisini kaldır
+    await AsyncStorage.removeItem("user");
+    setUser(null); // Kullanıcı state'ini sıfırla
+    setLoggedIn(false); // Giriş durumunu güncelle
   };
 
   useEffect(() => {
     const fetchUser = async () => {
         const fetchedUser = await AsyncStorage.getItem("user"); // getUser fonksiyonunu await ile çağırın
+        console.log("FetchedUser",fetchedUser);
         fetchedUser && setUser(JSON.parse(fetchedUser)); // user state'ini güncelleyin
     };
 
