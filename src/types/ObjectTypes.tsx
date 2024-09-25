@@ -14,3 +14,17 @@ export interface Food {
     MalzemeIdleri: number[],
     Fotograf: string
 }
+
+export interface PantryItem {
+    productId: string;
+    name: string;
+    quantity: number;
+  }
+
+export interface Product {
+    id:string,
+    name:string,
+    unit:string,
+    category:string,
+    img_url:string
+}

@@ -1,6 +1,7 @@
   import axios, { AxiosResponse } from "axios";
   import AsyncStorage from "@react-native-async-storage/async-storage";
   import { User } from "../context/AuthContext";
+import { httpGet, httpPost } from "./http-service";
 
   export const loginFromService = async (userData: any): Promise<AxiosResponse<any>> => {
       try {
@@ -35,19 +36,39 @@
 };
 
 export const getUserPantries = async (user: User): Promise<any[]> => {
-  console.log("USER TOKEN", user.token);
-  try {
-    const response = await axios.get('http://192.168.56.2:3000/api/user-info', {  // URL
-      headers: {
-        Authorization: `Bearer ${user.token}`,  // Bearer token
-      },
-    });
-    console.log("DOLABIM", response.data);
+  const config = {
+    headers: {
+      Authorization: `Bearer ${user.token}`,
+    },
+  };
 
-    // Eğer gelen veri mevcutsa döndür, yoksa boş dizi döndür
-    return response.data.items || []; // items yoksa boş dizi döner
-  } catch (error) {
-    console.error(error);  // Hata bilgisini konsola yazdır
-    return []; // Hata durumunda da boş dizi döndür
+  const response = await httpGet('user-info', config);
+  if (response.success) {
+    console.log("DOLABIM", response.data.items);
+    return response.data.items || [];
+  } else {
+    console.error(response.error);
+    return [];
+  }
+};
+export const addProductToPantry = async (user: User,productId:string,quantity:number): Promise<string> => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${user.token}`,
+    },
+  };
+  console.log("Prd Id",productId);
+  console.log("Qty",quantity);
+  const body = {
+    productId,
+    quantity,
+  };
+
+  const response = await httpPost('add-to-pantry', body,config);
+  if (response.success) {
+    return "İslem Basarılı"
+  } else {
+    console.error(response.error);
+    return "İslem Sırasında Bir Hata Oluştu."
   }
 };

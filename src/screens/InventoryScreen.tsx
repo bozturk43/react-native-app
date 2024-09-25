@@ -2,22 +2,19 @@ import React, { useEffect, useState } from 'react';
 import { Text, View, FlatList, ActivityIndicator } from 'react-native';
 import { useAuth } from '../context/AuthContext';
 import { getUserPantries } from '../services/user-service';
-import { Box, Heading, HStack, ScrollView, Spinner, VStack } from 'native-base';
-import { ProductCard } from '../components/Shared/ProductCard';
+import { Box, Heading, HStack, Modal, Pressable, ScrollView, Spinner, VStack } from 'native-base';
+import { PantryItemCard } from '../components/Shared/PantryItemCard';
 import { useTheme } from '../context/ThemeContext';
-
-// Ürünlerin tipini tanımlayın
-interface PantryItem {
-  productId: string;
-  name: string;
-  quantity: number;
-}
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import AddProductModal from '../components/Inventory/AddProductModal';
+import { PantryItem } from '../types/ObjectTypes';
 
 const InventoryScreen = () => {
   const { user } = useAuth();
   const { colors, fonts } = useTheme();
   const [loading, setLoading] = useState(true); // Yükleme durumu
   const [pantryItems, setPantryItems] = useState<PantryItem[]>([]); // Dolap malzemeleri durumu
+  const [isModalOpen,setIsModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchPantryItems = async () => {
@@ -35,7 +32,6 @@ const InventoryScreen = () => {
     fetchPantryItems(); // Fonksiyonu çağır
   }, [user]);
 
-  console.log("PANTRY ITEMS", pantryItems);
 
   if (loading) {
     return (
@@ -55,16 +51,22 @@ const InventoryScreen = () => {
           <Text>Henüz bir ürün yok.</Text>
         </>
       ) : (
-        <ScrollView height="100%" paddingX={2} paddingTop={2} paddingBottom={2} style={{backgroundColor:colors.brand[900]}} >
-          <VStack space={2} justifyContent="center">
+        <ScrollView height="100%" paddingX={2} paddingTop={2} paddingBottom={2} style={{ backgroundColor: colors.brand[900] }} >
+          <HStack space={4} justifyContent="space-between" marginBottom={4}>
             <Heading pl="2" fontSize={18}>
               Ürünler
             </Heading>
-          </VStack>
+            <Pressable onPress={()=>setIsModalOpen(true)}>
+              <HStack>
+                <Ionicons name="add-circle-outline" size={20} />
+                <Text> Ekle </Text>
+              </HStack>
+            </Pressable>
+          </HStack>
           {pantryItems.map((item: any) => (
-            <ProductCard
+            <PantryItemCard
               key={item.productId}
-              photoUrl="https://media.istockphoto.com/id/1450576005/tr/foto%C4%9Fraf/tomato-isolated-tomato-on-white-background-perfect-retouched-tomatoe-side-view-with.jpg?s=612x612&w=0&k=20&c=cjD8XQtMuCzMo-pGK3LGUx-iQvi9n97GN-cDybXVVrw="
+              photoUrl={item.img_url}
               productName={item.name}
               quantity={item.quantity}
               unit={item.unit}
@@ -74,6 +76,11 @@ const InventoryScreen = () => {
           {/* Ürünleri listelemek için buraya FlatList veya başka bir yapı ekleyebilirsiniz */}
         </ScrollView>
       )}
+      <Modal isOpen={isModalOpen}>
+        <Modal.Content justifyContent="center">
+        <AddProductModal onClose={()=>setIsModalOpen(false)} user={user}/>
+        </Modal.Content>
+      </Modal>
     </View>
   );
 };
