@@ -1,4 +1,4 @@
-import { Box, HStack, Image, Modal, Pressable, Stack, Text } from "native-base";
+import { HStack, Image, Modal, Pressable, Stack, Text } from "native-base";
 import { Product } from "../../types/ObjectTypes";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useState } from "react";
@@ -33,7 +33,8 @@ export const ProductCard = ({ id, name, category, unit, img_url }: Product) => {
             <Modal isOpen={isQuantityModalOpen}>
                 <Modal.Content justifyContent="center">
                     <AddQuantityModal 
-                        onClose={() => setIsQuantityModalOpen(false)} 
+                        onClose={() => setIsQuantityModalOpen(false)}
+                        type="add" 
                         user={user} 
                         productId={id} 
                         name={name} 

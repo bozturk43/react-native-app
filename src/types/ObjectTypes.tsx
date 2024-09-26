@@ -28,3 +28,8 @@ export interface Product {
     category:string,
     img_url:string
 }
+//0=> success 1=>fail
+export interface HttpServiceReturnObject{
+    message:string,
+    code:0 | 1,
+}

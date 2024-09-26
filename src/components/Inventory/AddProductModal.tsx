@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { Text, View } from 'react-native';
-import { Button, Heading, HStack, Input, Pressable, ScrollView, Spinner, VStack } from 'native-base';
+import React, { useState } from 'react';
+import { Text } from 'react-native';
+import { Heading, HStack, Input, Pressable, ScrollView, Spinner, VStack } from 'native-base';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { User } from '../../context/AuthContext';
-import { getAllProducts } from '../../services/product-service';
 import { Product } from '../../types/ObjectTypes';
 import { ProductCard } from '../Shared/ProductCard';
+import { useProductsQuery } from '../../services/query-service';
 
 interface Props {
   onClose: () => void;
@@ -14,38 +14,22 @@ interface Props {
 
 const AddProductModal = ({ onClose, user }: Props) => {
 
-  const [productList, setProductList] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true); // Yükleme durumu
   const [filteredList,setFilteredList] = useState<Product[]>([]);
   const [isOnSearch,setIsOnSearch] = useState(false);
-  useEffect(() => {
-    const fetchAllProducts = async () => {
-      try {
-        if (user) {
-          const items = await getAllProducts(user); // Kullanıcı mevcutsa veriyi al
-          console.log("ITEMS",items)
-          setProductList(items); // Gelen ürünleri ayarla, verilerin doğrudan kullanılabilir olduğundan emin olun
-        }
-      } catch (error) {
-        console.error("Error fetching products:", error); // Hata bilgisini konsola yazdır
-      } finally {
-        setLoading(false); // Yükleme tamamlandı
-      }
-    };
-    fetchAllProducts(); // Fonksiyonu çağır
-  }, [user]);
+  const { data: productList, isLoading } = useProductsQuery(user); // Kullanıcı bilgisi ile sorguyu çağırın
 
   const searchProducts = (searchText: string) => {
-    if (searchText !== "") {
+    if (searchText !== "" && productList) {
       setIsOnSearch(true);
-      setFilteredList(productList.filter((item: Product) =>
+      setFilteredList(productList?.filter((item: Product) =>
         item.name.toLowerCase().includes(searchText.toLowerCase())
       ));
     } else {
       setIsOnSearch(false);
     }
   };
-  if (loading) {
+
+  if (isLoading) {
     return (
       <HStack space={2} justifyContent="center">
         <Spinner accessibilityLabel="Loading posts" />
@@ -68,7 +52,7 @@ const AddProductModal = ({ onClose, user }: Props) => {
           </HStack>
         </Pressable>
       </HStack>
-      {productList.length < 1 ? (
+      {productList && productList.length < 1 ? (
         <>
           <Text>Ürünler Getirilirken Bir Hata Oluştu.</Text>
         </>
@@ -88,7 +72,7 @@ const AddProductModal = ({ onClose, user }: Props) => {
                 py="1" px="2"
                 />
         </VStack>
-        {(isOnSearch ? filteredList : productList).map((item: Product) => (
+        {productList && (isOnSearch ? filteredList : productList).map((item: Product) => (
             <ProductCard
               key={item.id}
               id={item.id}

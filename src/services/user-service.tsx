@@ -2,6 +2,7 @@
   import AsyncStorage from "@react-native-async-storage/async-storage";
   import { User } from "../context/AuthContext";
 import { httpGet, httpPost } from "./http-service";
+import { HttpServiceReturnObject } from "../types/ObjectTypes";
 
   export const loginFromService = async (userData: any): Promise<AxiosResponse<any>> => {
       try {
@@ -51,7 +52,7 @@ export const getUserPantries = async (user: User): Promise<any[]> => {
     return [];
   }
 };
-export const addProductToPantry = async (user: User,productId:string,quantity:number): Promise<string> => {
+export const addProductToPantry = async (user: User,productId:string,quantity:number): Promise<HttpServiceReturnObject> => {
   const config = {
     headers: {
       Authorization: `Bearer ${user.token}`,
@@ -63,12 +64,70 @@ export const addProductToPantry = async (user: User,productId:string,quantity:nu
     productId,
     quantity,
   };
-
   const response = await httpPost('add-to-pantry', body,config);
   if (response.success) {
-    return "İslem Basarılı"
+    const returnObject:HttpServiceReturnObject ={
+      code:0,
+      message:"İslem Basarılı"
+    } 
+    return returnObject
   } else {
     console.error(response.error);
-    return "İslem Sırasında Bir Hata Oluştu."
+    const returnObject:HttpServiceReturnObject ={
+      code:1,
+      message:"İslem Sırasında Bir Hata Oluştu"
+    }
+    return returnObject
   }
 };
+export const updateProductQuantityToPantry = async (user: User,productId:string,quantity:number): Promise<HttpServiceReturnObject> => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${user.token}`,
+    },
+  };
+  const body = {
+    productId,
+    quantity,
+  };
+  const response = await httpPost('update-pantry', body,config);
+  if (response.success) {
+    const returnObject:HttpServiceReturnObject ={
+      code:0,
+      message:"İslem Basarılı"
+    }
+    return returnObject
+  } else {
+    console.error(response.error);
+    const returnObject:HttpServiceReturnObject ={
+      code:1,
+      message:"İslem Sırasında Bir Hata Oluştu"
+    }
+    return returnObject
+  }
+};
+export const deleteProductFromPantry = async (user:User,productId:string):Promise<HttpServiceReturnObject>=>{
+  const config = {
+    headers: {
+      Authorization: `Bearer ${user.token}`,
+    },
+  };
+  const body = {productId};
+  const response = await httpPost('delete-from-pantry', body,config);
+
+  if (response.success) {
+    const returnObject:HttpServiceReturnObject ={
+      code:0,
+      message:"İslem Basarılı"
+    } 
+    return returnObject
+  } else {
+    console.error(response.error);
+    const returnObject:HttpServiceReturnObject ={
+      code:1,
+      message:"İslem Sırasında Bir Hata Oluştu"
+    }
+    return returnObject
+  }
+
+}
