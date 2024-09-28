@@ -1,6 +1,8 @@
 import { AspectRatio, Box, Heading, Image, Stack, VStack } from "native-base";
+import { Recipe } from "../../types/ObjectTypes";
 
-const SelectedCard = ({heading,url}:{heading:string,url:string}) => {
+interface SelectedCardProps extends Recipe {}
+const SelectedCard = ({id,name,description,ingredients,img_url}:SelectedCardProps) => {
     return (
         <VStack backgroundColor={"brand.800"} p="2" borderRadius={"md"} shadow={4}>
             <Box alignItems={"center"}>
@@ -14,13 +16,13 @@ const SelectedCard = ({heading,url}:{heading:string,url:string}) => {
                     backgroundColor: "gray.50"
                 }}>
                     <AspectRatio w="100%" ratio={16 / 9}>
-                        <Image source={{ uri:url }} alt="image" />
+                        <Image source={{ uri:img_url }} alt="image" />
                     </AspectRatio>
                 </Box>
             </Box>
             <Stack pl="3" pt="2">
                 <Heading size="md">
-                    {heading}
+                    {name}
                 </Heading>
             </Stack>
         </VStack>

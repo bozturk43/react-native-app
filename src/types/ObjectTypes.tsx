@@ -15,6 +15,21 @@ export interface Food {
     Fotograf: string
 }
 
+export interface Recipe {
+    id:string,
+    name:string,
+    description:string;
+    img_url:string;
+    ingredients:Ingredient[],
+    missingIngredients?:Ingredient[]
+}
+export interface Ingredient{
+    productId:string,
+    name?:string,
+    quantity?:number,
+    con_id?:string
+}
+
 export interface PantryItem {
     productId: string;
     name: string;

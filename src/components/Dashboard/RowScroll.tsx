@@ -2,10 +2,11 @@ import React from 'react';
 import { Box, HStack, Heading, ScrollView, Text, View } from 'native-base';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { CustomCard } from '../Shared/CustomCard';
-import { Food } from '../../types/ObjectTypes';
+import { Food, Recipe } from '../../types/ObjectTypes';
 import { getCategoryName } from '../../data/mocData';
 
-const RowScroll = ({foodList}:{foodList:Food[]}) => {
+
+const RowScroll = ({foodList}:{foodList:Recipe[]}) => {
     return (
         <>
             <Box>
@@ -14,10 +15,10 @@ const RowScroll = ({foodList}:{foodList:Food[]}) => {
                         {foodList?.map((item,index)=>(
                             <CustomCard 
                             key={index}
-                            url={item.Fotograf} 
-                            categoryName={ getCategoryName(item.KategoriId) || ""} 
-                            foodName={item.Ad}
-                            foodDescription={item.Tarif}
+                            url={item.img_url} 
+                            categoryName={ "Düzenlenecek"} 
+                            foodName={item.name}
+                            foodDescription={item.description}
                             />
                         ))}
                     </HStack>
