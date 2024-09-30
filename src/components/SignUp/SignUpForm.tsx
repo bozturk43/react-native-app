@@ -8,7 +8,6 @@ const SignUpForm = ({ navigation,handleActiveComponent }: { navigation: any ,han
     const { control, handleSubmit, formState: { errors } } = useForm<SignUpFormData>();
 
     const onSubmit = (data: SignUpFormData) => {
-        console.log("Veriler", data);
         handleActiveComponent();
     }
     var imag = require("../../assests/images/signinPageImage.jpg");

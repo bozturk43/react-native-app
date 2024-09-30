@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {HStack, Heading, Icon, Input, Pressable, ScrollView, Text, VStack } from 'native-base';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { NativeSyntheticEvent, TextInputChangeEventData, TouchableOpacity, View } from 'react-native';
@@ -6,59 +6,46 @@ import { belirliKategorilerdenBirerYemekAl } from '../../data/mocData';
 import { Food } from '../../types/ObjectTypes';
 import ColScroll from './ColScroll';
 import SearchResult from './SearchResult';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface Props{
     onFocus:()=>void;
     isOnSearch:boolean;
     closeSearch:()=>void;
     onTextChange: (text: string) => void;
-    onCategorySelect: (cetgoryId: number) => void;
+    onCategorySelect: (cetgoryId: string) => void;
 }
 
-const categories: any[] = [
-    {
-        label: "Baslangıclar",
-        icon: <Ionicons name="search-sharp" />,
-        id:1
-    },
-    {
-        label: "Ara Sıcaklar",
-        icon: <Ionicons name="search-sharp" />,
-        id:2
-    },
-    {
-        label: "Ana Yemekler",
-        icon: <Ionicons name="search-sharp" />,
-        id:3
-    },
-    {
-        label: "Soguk Mezeler",
-        icon: <Ionicons name="search-sharp" />,
-        id:4
-    },
-    {
-        label: "Tatlılar",
-        icon: <Ionicons name="search-sharp" />,
-        id:5
-    },
-    {
-        label: "İçecekler",
-        icon: <Ionicons name="search-sharp" />,
-        id:6
-    },
-
-]
 
 
 const Search = ({onFocus,isOnSearch,closeSearch,onTextChange,onCategorySelect}:Props) => {
     const [searchText, setSearchText] = useState('');
-    const [categoryId, setCategoryId] = useState(-1);
+    const [categoryId, setCategoryId] = useState<string>("");
+
+    const [categories, setCategories] = useState<{ id: string, name: string }[]>([]);
+
+
+    useEffect(() => {
+        const fetchCategoriesFromStorage = async () => {
+            try {
+                const storedCategories = await AsyncStorage.getItem('foodCategories');
+                if (storedCategories) {
+                    setCategories(JSON.parse(storedCategories)); // JSON string'i parse ederek state'e set ediyorum
+                }
+            } catch (error) {
+                console.error('Error fetching categories from AsyncStorage:', error);
+            }
+        };
+
+        fetchCategoriesFromStorage();
+    }, []);
+
 
 
     const onClose = () =>{
         closeSearch();
         setSearchText("");
-        setCategoryId(-1)
+        setCategoryId("")
     }
 
     return (
@@ -102,8 +89,8 @@ const Search = ({onFocus,isOnSearch,closeSearch,onTextChange,onCategorySelect}:P
                                 justifyContent={"flex-start"} 
                                 alignItems={"flex-start"}>
                                 <HStack>
-                                    <Icon size="4" color="gray.400" as={item.icon} />
-                                    <Text color={"white"} fontSize={10}>{item.label}</Text>
+                                    <Icon size="4" color="gray.400" as={<Ionicons name="search-sharp" />} />
+                                    <Text color={"white"} fontSize={10}>{item.name}</Text>
                                 </HStack>
                             </Pressable>
                         )

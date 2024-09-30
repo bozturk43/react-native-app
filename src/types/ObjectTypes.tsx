@@ -1,3 +1,4 @@
+
 export interface Category {
     KategoriId: number;
     KategoriAd: string;
@@ -19,6 +20,7 @@ export interface Recipe {
     id:string,
     name:string,
     description:string;
+    categoryId:string;
     img_url:string;
     ingredients:Ingredient[],
     missingIngredients?:Ingredient[]
