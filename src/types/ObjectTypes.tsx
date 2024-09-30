@@ -1,4 +1,24 @@
 
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'; // Burayı güncelledik
+import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
+import { CompositeNavigationProp } from '@react-navigation/native'; // Burayı güncelledik
+
+export type RootStackParamList = {
+    RecipeDetailScreen: {recipeId:string,recipeName:string}
+    // Diğer ekranlarınızı buraya ekleyin
+};
+
+export type TabParamList = {
+    Dashboard: undefined;
+    Dolabım: undefined;
+    Settings: undefined;
+};
+
+export type NavigationProp = CompositeNavigationProp<
+    NativeStackNavigationProp<RootStackParamList>,
+    BottomTabNavigationProp<TabParamList>
+>;
+
 export interface Category {
     KategoriId: number;
     KategoriAd: string;

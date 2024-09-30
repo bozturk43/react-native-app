@@ -1,9 +1,15 @@
 import { AspectRatio, Box, Heading, Image, Stack, VStack } from "native-base";
-import { Recipe } from "../../types/ObjectTypes";
+import { NavigationProp, Recipe } from "../../types/ObjectTypes";
+import { useNavigation } from "@react-navigation/native";
+
+import { Pressable } from "react-native";
 
 interface SelectedCardProps extends Recipe {}
 const SelectedCard = ({id,name,description,ingredients,img_url}:SelectedCardProps) => {
+
+    const navigation = useNavigation<NavigationProp>(); // Burada tip güvenliğini sağlıyoruz
     return (
+        <Pressable onPress={()=>navigation.navigate("RecipeDetailScreen", { recipeId: id,recipeName:name })}>
         <VStack backgroundColor={"brand.800"} p="2" borderRadius={"md"} shadow={4}>
             <Box alignItems={"center"}>
                 <Box maxW="80" rounded="lg" overflow="hidden" borderColor="coolGray.200" borderWidth="1" _dark={{
@@ -26,6 +32,7 @@ const SelectedCard = ({id,name,description,ingredients,img_url}:SelectedCardProp
                 </Heading>
             </Stack>
         </VStack>
+        </Pressable>
     )
 
 }

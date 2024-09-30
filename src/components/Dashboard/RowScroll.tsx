@@ -41,6 +41,7 @@ const RowScroll = ({ foodList }: { foodList: Recipe[] }) => {
                         {foodList?.map((item, index) => (
                             <CustomCard
                                 key={index}
+                                id={item.id}
                                 url={item.img_url}
                                 categoryName={getCategoryNameById(item.categoryId)}
                                 foodName={item.name}

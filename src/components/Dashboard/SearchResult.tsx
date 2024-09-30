@@ -7,6 +7,10 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { useAvailableFoodsQuery } from "../../services/query-service";
 import { useAuth } from "../../context/AuthContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Pressable } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { NavigationProp } from "../../types/ObjectTypes";
+
 
 interface Props {
     searchText: string,
@@ -142,6 +146,7 @@ const ResultContent = ({ foodList }: ResultContentProps) => {
                         {foodList?.map((item, index) => (
                             <ItemContent
                                 key={index}
+                                id={item.id}
                                 url={item.img_url}
                                 categoryName={categoryNames[item.categoryId] || 'Yükleniyor...'}
                                 foodName={item.name}
@@ -156,16 +161,22 @@ const ResultContent = ({ foodList }: ResultContentProps) => {
 }
 
 interface ItemContentProps {
+    id:string;
     url: string;
     categoryName: string;
     foodName: string;
     foodDescription: string
 }
-const ItemContent = ({ url, categoryName, foodName, foodDescription }: ItemContentProps) => {
+const ItemContent = ({ id,url, categoryName, foodName, foodDescription }: ItemContentProps) => {
 
     const [imgError, setImgError] = useState<boolean>(false);
+    const navigation = useNavigation<NavigationProp>(); // Burada tip güvenliğini sağlıyoruz
+
+    
 
     return (
+        <Pressable onPress={()=>navigation.navigate("RecipeDetailScreen", { recipeId: id,recipeName:foodName })}>
+
         <Box alignItems="center" w={"350px"} h={"220px"}>
             <Box rounded="lg" overflow="hidden" _dark={{
                 borderColor: "coolGray.600",
@@ -219,6 +230,7 @@ const ItemContent = ({ url, categoryName, foodName, foodDescription }: ItemConte
                 </Stack>
             </Box>
         </Box>
+        </Pressable>
     )
 }
 
