@@ -4,7 +4,7 @@ import { User } from '../context/AuthContext';
 import { Product } from '../types/ObjectTypes';
 import { getUserPantries } from './user-service';
 import { getAllProducts, getFoodCategories } from './product-service';
-import { getAvailableFoods } from './recipe-service';
+import { getAvailableFoods,getRecipeDetailById } from './recipe-service';
 
 export const usePantriesQuery = (user: User | null) => {
   return useQuery<Product[]>({
@@ -32,7 +32,6 @@ export const useProductsQuery = (user: User | null) => {
       enabled: !!user,
     });
   };
-
   export const useAvailableFoodsQuery = (user: User | null): {
     data: any; 
     isLoading: boolean; 
@@ -70,5 +69,19 @@ export const useProductsQuery = (user: User | null) => {
         return [];
       },
       enabled: !!user,
+    });
+  };
+
+  export const useRecipeDetails = (user: User | null, recipeId: string | null) => {
+    return useQuery<any>({
+      queryKey: ['fetchRecipeDetails', recipeId],
+      queryFn: async () => {
+        if (user && recipeId) {
+          const data = await getRecipeDetailById(user, recipeId);
+          return data;
+        }
+        return null; // Eğer user veya recipeId yoksa null döndür
+      },
+      enabled: !!user && !!recipeId, // Hem user hem de recipeId varsa sorgu aktif olur
     });
   };

@@ -1,6 +1,5 @@
 import { AspectRatio, Box, Center, Checkbox, HStack, Heading, Image, ScrollView, Stack, Text, VStack, View, useScreenReaderEnabled } from "native-base";
 import {Recipe } from "../../types/ObjectTypes";
-import ColScroll from "./ColScroll";
 import { useEffect, useState } from "react";
 import { truncateDescription } from "../../helpers/StringHelper";
 import Ionicons from "react-native-vector-icons/Ionicons";

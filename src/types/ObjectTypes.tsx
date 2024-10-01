@@ -47,9 +47,13 @@ export interface Recipe {
 }
 export interface Ingredient{
     productId:string,
-    name?:string,
+    productName?:string,
+    conversionName?:{
+        con_name:string
+    },
     quantity?:number,
-    con_id?:string
+    con_id?:string,
+    isMissing:boolean
 }
 
 export interface PantryItem {

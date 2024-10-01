@@ -5,7 +5,7 @@ import { Button } from 'native-base';
 import { logout } from '../services/user-service';
 
 const SettingScreen = () => {
-  const { user,logout } = useAuth();
+  const { user, logout } = useAuth();
   function LogOutUser() {
     logout();
   }
@@ -15,8 +15,8 @@ const SettingScreen = () => {
       <Text>Settings Screen</Text>
       <Text>{user?.username}</Text>
       <Button bg="primary.600" w="60%" size="xs" onPress={() => LogOutUser()}>
-            Giriş Yap
-          </Button>
+        Çıkış Yap
+      </Button>
     </View>
   );
 };
