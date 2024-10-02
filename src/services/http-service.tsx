@@ -1,6 +1,8 @@
 import axios, { AxiosPromise, AxiosRequestConfig } from 'axios';
 
+// const API_URL = 'https://mutfagim-next-api.vercel.app/api/'; // API base URL
 const API_URL = 'http://192.168.56.2:3000/api/'; // API base URL
+
 
 // Response şablonu
 interface ApiResponse {

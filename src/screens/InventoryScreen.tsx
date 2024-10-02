@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Text, View, ScrollView, HStack, Heading, Pressable, Modal, Spinner } from 'native-base';
+import { Text, View, ScrollView, HStack, Heading, Pressable, Modal, Spinner, VStack } from 'native-base';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -27,7 +27,17 @@ const InventoryScreen = () => {
   return (
     <View>
       {pantryItems && pantryItems?.length < 1 ? (
-        <Text>Henüz bir ürün yok.</Text>
+        <VStack h={"100%"} justifyItems={"center"} alignItems={"center"} justifyContent={"center"} style={{ backgroundColor: colors.brand[900]}}>
+          <Text>
+            Henüz Dolabınızda Bir Ürün Yok
+          </Text>
+          <Pressable onPress={() => setIsModalOpen(true)}>
+            <VStack justifyItems={"center"} alignItems={"center"}>
+              <Text> Eklemek İçin Dokunun </Text>
+              <Ionicons name="add-circle-outline" size={35} />
+            </VStack>
+          </Pressable>
+        </VStack>
       ) : (
         <ScrollView height="100%" paddingX={2} paddingTop={2} paddingBottom={2} style={{ backgroundColor: colors.brand[900] }}>
           <HStack space={4} justifyContent="space-between" marginBottom={4}>

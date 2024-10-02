@@ -45,7 +45,6 @@ export const getUserPantries = async (user: User): Promise<any[]> => {
 
   const response = await httpGet('user-info', config);
   if (response.success) {
-    console.log("DOLABIM", response.data.items);
     return response.data.items || [];
   } else {
     console.error(response.error);
@@ -58,8 +57,6 @@ export const addProductToPantry = async (user: User,productId:string,quantity:nu
       Authorization: `Bearer ${user.token}`,
     },
   };
-  console.log("Prd Id",productId);
-  console.log("Qty",quantity);
   const body = {
     productId,
     quantity,
@@ -130,4 +127,30 @@ export const deleteProductFromPantry = async (user:User,productId:string):Promis
     return returnObject
   }
 
+}
+export const uploadUserProphilePhoto = async (user:User,base64Image:string):Promise<HttpServiceReturnObject> =>{
+  const config = {
+    headers: {
+      Authorization: `Bearer ${user.token}`,
+    },
+  };
+  const body = {
+    base64Image:base64Image
+  };
+  const response = await httpPost('upload-profile-photo', body,config);
+  if (response.success) {
+    const returnObject:HttpServiceReturnObject ={
+      code:0,
+      message:"İslem Basarılı",
+      data:response.data
+    } 
+    return returnObject
+  } else {
+    console.error(response.error);
+    const returnObject:HttpServiceReturnObject ={
+      code:1,
+      message:"İslem Sırasında Bir Hata Oluştu"
+    }
+    return returnObject
+  }
 }

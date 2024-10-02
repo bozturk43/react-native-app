@@ -53,6 +53,7 @@ const AddQuantityModal = ({type,onClose, user, productId, name, img_url,quantity
                         duration: 3000,
                     });
                     queryClient.invalidateQueries({queryKey:['fetchPantryItems']});
+                    onClose();
                 }
                 else{
                     showMessage({
@@ -82,6 +83,7 @@ const AddQuantityModal = ({type,onClose, user, productId, name, img_url,quantity
                         duration: 3000,
                     });
                     queryClient.invalidateQueries({queryKey:['fetchPantryItems']});
+                    onClose();
                 }
                 else{
                     showMessage({

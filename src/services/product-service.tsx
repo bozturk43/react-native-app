@@ -5,6 +5,7 @@ export const getAllProducts = async (user: User): Promise<any[]> => {
     const config = {
       headers: {
         Authorization: `Bearer ${user.token}`,
+
       },
     };
   

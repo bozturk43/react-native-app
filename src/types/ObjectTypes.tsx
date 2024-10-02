@@ -73,4 +73,5 @@ export interface Product {
 export interface HttpServiceReturnObject{
     message:string,
     code:0 | 1,
+    data?:any,
 }

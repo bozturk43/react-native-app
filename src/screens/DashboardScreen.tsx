@@ -1,22 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext'
-import { HStack, Heading, ScrollView, Spinner, Text, VStack, View } from 'native-base';
+import { Box, HStack, Heading, Pressable, ScrollView, Spinner, Text, VStack, View } from 'native-base';
 import RowScroll from '../components/Dashboard/RowScroll';
 import SelectedCard from '../components/Shared/SelectedCard';
 import Greetings from '../components/Dashboard/Greetings';
 import Search from '../components/Dashboard/Search';
 import { belirliKategorilerdenBirerYemekAl, yemekler } from '../data/mocData'
-import { Food, Recipe } from '../types/ObjectTypes';
+import { Food, NavigationProp, Recipe } from '../types/ObjectTypes';
 import SearchResult from '../components/Dashboard/SearchResult';
 import { useAvailableFoodsQuery } from '../services/query-service';
 import { RefreshControl } from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useNavigation } from '@react-navigation/native';
+import { useQueryClient } from '@tanstack/react-query';
+
 
 const DashboardScreen = () => {
   const { user, logout } = useAuth();
   const { colors, fonts } = useTheme();
   const [refreshing, setRefreshing] = useState(false);
-
   const [isSearch, setIsSearch] = useState<boolean>(false);
   const [searchText, setSearchText] = useState<string>("");
   const [searchCategory, setSearchCategory] = useState<string>("");
@@ -25,14 +28,14 @@ const DashboardScreen = () => {
   const [unAvailableRecipes, setUnAvailableRecipes] = useState<Recipe[] | null>(null);
   const { data: foodList, isLoading, refetch } = useAvailableFoodsQuery(user); // Kullanıcı bilgisi ile sorguyu çağırın
 
+  const queryClient = useQueryClient();
+  const navigation = useNavigation<NavigationProp>();
+
+
   const onRefresh = async () => {
     setRefreshing(true);
-    // Veri sorgulama işlemini yeniden başlat
-    await refetch(); // useAvailableFoodsQuery'den refetch fonksiyonunu alarak kullanabilirsiniz
+    await queryClient.invalidateQueries({ queryKey: ['fetchAvailableFoods'] });
     setRefreshing(false);
-    randomRecipe();
-    setAvailableRecipes(foodList.availableRecipes);
-    setUnAvailableRecipes(foodList.unavailableRecipes);
   };
 
   const randomRecipe = () => {
@@ -49,7 +52,7 @@ const DashboardScreen = () => {
       setAvailableRecipes(foodList.availableRecipes);
       setUnAvailableRecipes(foodList.unavailableRecipes);
     }
-  }, [foodList]);
+  }, [foodList,onRefresh]);
 
   return (
     <ScrollView paddingX={2} paddingTop={2} paddingBottom={2} style={{ backgroundColor: colors.brand[900] }}
@@ -66,7 +69,7 @@ const DashboardScreen = () => {
         </View>
       ) : (
         <>
-          {!isSearch && <Greetings username={user?.username || ""} />}
+          {!isSearch && <Greetings user={user} />}
           <Search
             onFocus={() => setIsSearch(true)}
             isOnSearch={isSearch}
@@ -86,15 +89,28 @@ const DashboardScreen = () => {
                 <Heading pl="2" fontSize={18}>
                   Günün Yemegi
                 </Heading>
-                {rastgeleTarif &&
+                {rastgeleTarif ? (
                   <SelectedCard
-                    id={rastgeleTarif?.id}
-                    name={rastgeleTarif?.name}
+                    id={rastgeleTarif.id}
+                    name={rastgeleTarif.name}
                     img_url={rastgeleTarif.img_url}
                     categoryId={rastgeleTarif.categoryId}
-                    description={rastgeleTarif?.description}
-                    ingredients={rastgeleTarif.ingredients} />
-                }
+                    description={rastgeleTarif.description}
+                    ingredients={rastgeleTarif.ingredients}
+                  />
+                ) : (
+                  <Box paddingX={3}>
+                    <Text fontSize={12}>
+                      Size yemek önermek için dolabınızda yeterli ürün bulamadık, lütfen dolabınıza yeni ürünler ekleyin.
+                    </Text>
+                    <Pressable onPress={()=>navigation.navigate("Dolabım")}>
+                      <HStack alignItems={"center"} justifyContent={"center"}>
+                        <Text>Dolabıma Git</Text>
+                        <Ionicons name="arrow-forward-circle-outline" size={25} />
+                      </HStack>
+                    </Pressable>
+                  </Box>
+                )}
               </VStack>
               {/*==============SECTİON 2=========== */}
               <VStack>
@@ -106,7 +122,21 @@ const DashboardScreen = () => {
                     (Mevcut Ürünleriniz ile Yapabilirsiniz.)
                   </Text>
                 </HStack>
-                {availableRecipes && <RowScroll foodList={availableRecipes} />}
+                {availableRecipes && availableRecipes.length > 0 ? (
+                  <RowScroll foodList={availableRecipes} />
+                ) : (
+                  <Box paddingX={3}>
+                    <Text fontSize={12}>
+                      Kullanılabilir tarifler için dolabınızda yeterli ürün bulamadık, lütfen dolabınıza yeni ürünler ekleyin.
+                    </Text>
+                    <Pressable onPress={()=>navigation.navigate("Dolabım")}>
+                      <HStack alignItems={"center"} justifyContent={"center"}>
+                        <Text>Dolabıma Git</Text>
+                        <Ionicons name="arrow-forward-circle-outline" size={25} />
+                      </HStack>
+                    </Pressable>
+                  </Box>
+                )}
               </VStack>
               {/*==============SECTİON 3=========== */}
               <VStack>
