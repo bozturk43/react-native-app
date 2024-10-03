@@ -3,13 +3,42 @@
   import { User } from "../context/AuthContext";
 import { httpGet, httpPost } from "./http-service";
 import { HttpServiceReturnObject } from "../types/ObjectTypes";
+import { SignUpFormData } from "../types/UserTypes";
 
+  export const signUpFromService = async(signUpData:SignUpFormData):Promise<HttpServiceReturnObject> => {
+    const body = {
+      email:signUpData.email,
+      name:signUpData.username,
+      password:signUpData.password
+    };
+    const config = {
+      headers: {
+        "Content-Type": `application/json`,
+      },
+    };
+    const response = await httpPost('sign-up', body,config);
+    if (response.success) {
+      const returnObject:HttpServiceReturnObject ={
+        code:0,
+        message:"İslem Basarılı"
+      } 
+      return returnObject
+    } else {
+      console.error(response.error);
+      const returnObject:HttpServiceReturnObject ={
+        code:1,
+        message:"İslem Sırasında Bir Hata Oluştu"
+      }
+      return returnObject
+    }
+
+  }
   export const loginFromService = async (userData: any): Promise<AxiosResponse<any>> => {
       try {
         const response = await axios.post('http://192.168.56.2:3000/api/auth', userData);
         return response;
-      } catch (error) {
-        throw new Error("Failed Login"); // Hata yönetimi burada düzenlenebilir
+      } catch (error:any) {
+        throw error;
       }
     };
   export async function getUser(): Promise<User | null> {

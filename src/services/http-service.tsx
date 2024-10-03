@@ -30,6 +30,8 @@ export const httpGet = async(url: string, config?: AxiosRequestConfig): Promise<
 // // POST request
 export const httpPost = async(url: string, body: any, config?: AxiosRequestConfig): Promise<ApiResponse> => {
   try {
+    console.log("BODY HTTP SERVİCE",body);
+    console.log("CONFIG HTTP SERVİCE",config);
     const response = await axios.post(`${API_URL}${url}`, body, config);
     return {
       success: true,

@@ -1,11 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
-import {HStack, Heading, Icon, Input, Pressable, ScrollView, Text, VStack } from 'native-base';
+import {HStack, Icon, Input, Pressable, ScrollView, Text, VStack } from 'native-base';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { NativeSyntheticEvent, TextInputChangeEventData, TouchableOpacity, View } from 'react-native';
-import { belirliKategorilerdenBirerYemekAl } from '../../data/mocData';
-import { Food } from '../../types/ObjectTypes';
-import ColScroll from './ColScroll';
-import SearchResult from './SearchResult';
+import {TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface Props{

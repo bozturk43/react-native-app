@@ -23,9 +23,8 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
     try {
       await login(userData);
       // Başarıyla giriş yaptıktan sonra yapılacak işlemler
-    } catch (err) {
-      console.log(err)
-      setError("Giriş yapılamadı. Lütfen bilgilerinizi kontrol edin."); // Hata mesajını state'e kaydet
+    } catch (err:any) {
+      setError(err.response?.data?.error); // Hata mesajını state'e kaydet
     }
   };
   var imag = require("../../assests/images/logo-color.png");
